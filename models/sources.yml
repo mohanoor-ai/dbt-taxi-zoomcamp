@@ -1,0 +1,10 @@
+# This file defines our connection to the raw BigQuery data
+version: 2
+
+sources:
+  - name: staging
+    database: dataeng-proj-487214
+    dataset: nytaxi
+    tables:
+      - name: yellow_tripdata
+      - name: green_tripdata
