@@ -10,10 +10,11 @@ with tripdata as
 )
 select
     -- identifiers
+    -- This uses the dbt_utils package macro (Course Code 4.5.3)
     {{ dbt_utils.generate_surrogate_key(['vendorid', 'lpep_pickup_datetime']) }} as tripid,
     cast(vendorid as integer) as vendorid,
     cast(ratecodeid as integer) as ratecodeid,
-    cast(pulocationid as integer) as  pickup_location_id,
+    cast(pulocationid as integer) as pickup_location_id,
     cast(dolocationid as integer) as dropoff_location_id,
     
     -- timestamps
@@ -35,12 +36,16 @@ select
     cast(ehail_fee as numeric) as ehail_fee,
     cast(improvement_surcharge as numeric) as improvement_surcharge,
     cast(total_amount as numeric) as total_amount,
+    
+    -- This uses your CUSTOM macro (Course Code 4.4.2)
+    {{ get_payment_type_description('payment_type') }} as payment_type_description,
     cast(payment_type as integer) as payment_type,
+    
     cast(congestion_surcharge as numeric) as congestion_surcharge
 from tripdata
 where rn = 1
 
--- dbt build --m <model.sql> --var 'is_test_run: false'
+-- Variable logic to limit data during testing
 {% if var('is_test_run', default=true) %}
 
   limit 100
