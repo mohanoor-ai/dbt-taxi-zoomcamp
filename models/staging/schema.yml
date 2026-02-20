@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: staging
+    database: dataeng-proj-487214 # Your GCP Project ID
+    schema: nytaxi              # The dataset where your raw taxi tables are
+    tables:
+      - name: green_tripdata
+      - name: yellow_tripdata
